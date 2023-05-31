@@ -1,0 +1,64 @@
+  @keyframes growProgressBar {
+
+            0%,
+            33% {
+                --pgPercentage: 0;
+            }
+
+            100% {
+                --pgPercentage: var(--value);
+            }
+        }
+
+        @property --pgPercentage {
+            syntax: '<number>';
+            inherits: true;
+            initial-value: 0;
+        }
+
+        div[role="progressbar"] {
+            --size: 1.2rem;
+            --fg: Black;
+            --bg: WhiteSmoke;
+            --pgPercentage: var(--value);
+            animation: growProgressBar 3s 1 forwards;
+            width: 12rem;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            display: grid;
+            background: radial-gradient(farthest-side, #0000 calc(100% - var(--size)), var(--bg) 0);
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: calc(var(--size));
+            color: var(--fg);
+            top: 50%;
+            left: 50%;
+            transform: translate(5%, 0%);
+        }
+        
+        
+        div[role="progressbar"]:hover {    
+            --size: 1.2rem;
+            font-weight: bold;
+  }
+        div[role="progressbar"]::after {
+            content: "";
+            grid-area: 1/1;
+            border-radius: 50%;
+            padding: var(--size);
+            background:
+                conic-gradient(red, orange, yellow,lightblue);
+            --_m:
+                conic-gradient(#000 calc(var(--pgPercentage) * 1%), #0000 0),
+                linear-gradient(#000 0 0) content-box;
+            -webkit-mask: var(--_m);
+            mask: var(--_m);
+            -webkit-mask-composite: source-out;
+            mask-composite: subtract;
+        }
+
+        div[role="progressbar"]::before {
+            counter-reset: percentage var(--value);
+            content: counter(percentage) '%';
+            grid-area: 1/1;
+            margin: auto;
+        }
